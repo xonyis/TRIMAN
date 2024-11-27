@@ -9,7 +9,7 @@ defineProps({
 
 <template>
   <div class="greetings">
-    <h1 class="green">{{ msg }}</h1>
+    <h1>{{ msg }}</h1>
     <h3>
       Bienvenue tu veux faire une partie ?
     </h3>
@@ -22,6 +22,7 @@ h1 {
   font-size: 2.6rem;
   position: relative;
   top: -10px;
+  color: var(--yellow);
 }
 
 h3 {

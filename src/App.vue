@@ -4,27 +4,32 @@ import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <div class="main-container">
+    <header>
+      <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
-    <div class="wrapper">
-      <HelloWorld msg="Triman !" />
+      <div class="wrapper">
+        <HelloWorld msg="Triman !" />
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
+        <nav>
+          <RouterLink to="/">Home</RouterLink>
+          <RouterLink to="/about">About</RouterLink>
+        </nav>
+      </div>
+    </header>
   <RouterView />
+  </div>
 </template>
 
 <style scoped>
+
+
 header {
   line-height: 1.5;
   max-height: 100vh;
+  
 }
+
 
 .logo {
   display: block;
@@ -50,6 +55,7 @@ nav a {
   display: inline-block;
   padding: 0 1rem;
   border-left: 1px solid var(--color-border);
+  color: var(--yellow);
 }
 
 nav a:first-of-type {
