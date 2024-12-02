@@ -2,7 +2,7 @@
     <div>
         <img v-if="dice.isRolling" :src="dice.gifPath" @load="gifLoaded" alt="gif lancé dés" />
         <img v-if="!dice.isRolling && dice.value" :src="dice.imgPath" alt="image finale du lancé" />
-        <div>{{ dice.value }}</div>
+        <div v-if="!dice.isRolling" :style="dynamicStyle">{{ dice.value }}</div>
    </div>
 </template>
 <script>
@@ -21,6 +21,13 @@ export default {
         value: {
           type: Number,
           required: true
+        }
+    },
+    computed: {
+        dynamicStyle() {
+            return {
+              color: this.dice.value === 3 ? 'var(--red)' : "var(--white-text)",
+            }
         }
     },
     methods: {
@@ -58,7 +65,6 @@ export default {
               default:
                 break;
             }
-            console.log('yooo');
             
             this.$emit('value', this.dice.value)
         },

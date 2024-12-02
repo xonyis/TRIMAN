@@ -1,22 +1,39 @@
 <template>
     <main>
-        <div class="parent">
-            <div class="div1">Player</div>
-            <div class="div2">rules</div>
+        <!-- Formulaire pour choisir le nombre de joueurs -->
+        <div v-if="!game.nbrPlayer" class="form-container">
+          <h2>Choisissez le nombre de joueurs</h2>
+          <form @submit.prevent="setNumberOfPlayers">
+            <label for="nbrPlayer">Nombre de joueurs (1-8) :</label>
+            <input
+              type="number"
+              id="nbrPlayer"
+              v-model.number="playerInput"
+              min="2"
+              max="8"
+              required
+            />
+            <button type="submit">Commencer</button>
+          </form>
+        </div>
+
+        <div class="parent" v-else>
+            <div class="div1">{{game.players[playerTurn].name}}:<RulesComponent v-if="!isCooldown" @isRule="changePlayer" :result="result"/>
+            </div>
+            
             <div class="div3"><DiceComponent ref="diceComponent1" @value="handleDice1"/></div>
             <div class="div4"><DiceComponent ref="diceComponent2" @value="handleDice2"/></div>
             <div class="div5">
-                <p>{{ dice1.value + dice2.value }}</p>
-                <span v-if="exo">Player 12 tu ditrivue 6 gorgées <br> Triman tu prend 2 gorgées</span>
+                <span>Total :</span>
+                <p v-if="!isCooldown && totalDice" :style="dynamicStyleDice">{{ totalDice }}</p>
+                
             </div>
             <div class="div6" @click="callRollDice" :disabled="isCooldown" 
                 :style="{ background: progressBackground }">
                 Jouer
             </div>
         </div>
-        <div class="button-container">
-    
-  </div>
+        <!-- 8 Player max -->
         <!-- <div class="parent2">
             <div class="div12">a </div>
             <div class="div22">a </div>
@@ -28,9 +45,15 @@
 </template>
 <script>
 import DiceComponent from '@/components/game/DiceComponent.vue';
+import RulesComponent from '@/components/game/RulesComponent.vue';
+
 export default {
     data() {
         return {
+            game: {
+                nbrPlayer: null,
+                players: [],
+            },
             dice1: {
                 value:null
             },
@@ -41,6 +64,8 @@ export default {
             progress: 0, // Progression de la barre
             cooldownTime: 1500, // Temps de cooldown en millisecondes
             interval: null,
+            playerInput: null,
+            playerTurn: 0
         }
     },
     computed: {
@@ -48,9 +73,19 @@ export default {
       // Crée une superposition sombre en fonction de la progression
       return `linear-gradient(to right, rgba(0, 198, 94, 0.6) ${this.progress}%, rgba(0, 189, 94, 1) ${this.progress}%)`;
     },
+    totalDice() {
+        return this.dice1.value + this.dice2.value 
+    },
+    dynamicStyleDice() {
+        return {
+          color: this.totalDice === 3 ? 'var(--red)' : "var(--white-text)",
+          lineHeight : '1em'
+        }
+    }
   },
     components: {
-        DiceComponent
+        DiceComponent,
+        RulesComponent
     },
     methods: {
         handleDice1(value) {
@@ -66,6 +101,12 @@ export default {
             this.$refs.diceComponent1.lancerDe();
             this.$refs.diceComponent2.lancerDe();
           }
+          this.result = {
+                total: this.totalDice,
+                de1: this.dice1.value,
+                de2: this.dice2.value
+            }
+          return this.result
         },
         startCooldown() {
             this.isCooldown = true;
@@ -85,8 +126,30 @@ export default {
             };
         
             requestAnimationFrame(animate);
+            
         },
-
+        changePlayer() {
+            if (this.playerTurn < this.game.players.length) {
+                this.playerTurn++
+                if (this.playerTurn === this.game.players.length) {
+                    this.playerTurn = 0
+                }
+            }
+        },
+        setNumberOfPlayers() {
+          if (this.playerInput >= 1 && this.playerInput <= 8) {
+            this.game.nbrPlayer = this.playerInput; // Met à jour le nombre de joueurs
+            
+            // Créer le tableau des joueurs
+            this.game.players = Array.from({ length: this.playerInput }, (v, i) => ({
+                id: i + 1,
+                name: `Player ${i + 1}`,
+              }));
+              
+            } else {
+              alert("Le nombre de joueurs doit être entre 1 et 8.");
+            }
+        },
     }
     
 }
@@ -115,9 +178,10 @@ main {
 }
 
 .div1 { 
-    grid-area: 1 / 1 / 2 / 2;
+    grid-area: 1 / 1 / 2 / 3;
     background: var(--blue);
-   
+    color: var(--white-text);   
+
 }
 .div2 { 
     grid-area: 1 / 2 / 2 / 3;
@@ -134,9 +198,9 @@ main {
 .div5 { 
     grid-area: 4 / 1 / 5 / 3;
     display: flex;
-    justify-content: center;
+    
     flex-direction:column ;
-    background: var(--red);
+    background: var(--yellow);
 }
 .div5 p{ 
     font-size: 3em;
@@ -145,10 +209,11 @@ main {
     width: 100%;
 }
 .div5 span{ 
-    font-size:14px;
+    font-size:16px;
     color: var(--white-text);
-    text-align: center;
-    width: 100%;
+    position: relative;
+    left: 0px;
+    
    
 }
 .div6 { 
