@@ -23,9 +23,11 @@ h1 {
   font-size: 2.6rem;
   color: var(--yellow);
   margin: auto;
-  margin-top: 1rem;
-}
 
+}
+.greetings {
+  margin-bottom: 1rem;
+}
 h3 {
   font-size: 1rem;
 }

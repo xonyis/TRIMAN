@@ -58,7 +58,8 @@ export default {
         <p class="small-text">Le tour se termine quand tous les joueurs ont joué, le Triman jouant toujours en dernier. </p>
         <p class="small-text">Une fois le tour terminé on reprend a zéro et on cherche un nouveau triman. </p>
 
-        
+        <p>- Pour les vaillants :</p>
+        <p class="small-text">Lorsque un double tombe le triman Boit automatiquement les gorgées. </p>
 
         <!-- <div class="additional-info">
           <h4>Règles supplémentaires</h4>

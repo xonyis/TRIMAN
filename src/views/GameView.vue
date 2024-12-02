@@ -2,6 +2,7 @@
     <main>
         <!-- Formulaire pour choisir le nombre de joueurs -->
         <div v-if="!game.nbrPlayer" class="form-container">
+            <HelloWorld msg="Triman !" />
           <h2>Choisissez le nombre de joueurs</h2>
           <form @submit.prevent="setNumberOfPlayers">
             <label for="nbrPlayer">Nombre de joueurs (1-8) :</label>
@@ -12,13 +13,15 @@
               min="2"
               max="8"
               required
-            />
+            /> <br>
+            <label for="nbrPlayer">Règles ignorance:</label>
+            <input type="checkbox" v-model="game.ignorance" id="checkboxIgnorance">
             <button type="submit">Commencer</button>
           </form>
         </div>
 
         <div class="parent" v-else>
-            <div class="div1">{{game.players[playerTurn].name}}:<RulesComponent v-if="!isCooldown" @isRule="changePlayer" :result="result"/>
+            <div class="div1">{{game.players[playerTurn].name}}:<RulesComponent v-if="!isCooldown && !game.ignorance" @isRule="changePlayer" :result="result"/>
             </div>
             
             <div class="div3"><DiceComponent ref="diceComponent1" @value="handleDice1"/></div>
@@ -46,6 +49,7 @@
 <script>
 import DiceComponent from '@/components/game/DiceComponent.vue';
 import RulesComponent from '@/components/game/RulesComponent.vue';
+import HelloWorld from '../components/HelloWorld.vue'
 
 export default {
     data() {
@@ -53,6 +57,7 @@ export default {
             game: {
                 nbrPlayer: null,
                 players: [],
+                ignorance: false
             },
             dice1: {
                 value:null
@@ -85,7 +90,8 @@ export default {
   },
     components: {
         DiceComponent,
-        RulesComponent
+        RulesComponent,
+        HelloWorld
     },
     methods: {
         handleDice1(value) {
@@ -149,6 +155,8 @@ export default {
             } else {
               alert("Le nombre de joueurs doit être entre 1 et 8.");
             }
+            console.log(this.game.ignorance);
+            
         },
     }
     
@@ -224,8 +232,8 @@ main {
     color: var(--white-text);
     font-size: 2em;
     background: var(--green);
-    
 }
+
 body {
   font-family: Arial, sans-serif;
   display: flex;
