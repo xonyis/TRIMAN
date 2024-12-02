@@ -20,15 +20,17 @@ export default {
 
 <template>
   <div class="rules-page">
-    <WelcomeItem>
-      <template #icon>
-        <DocumentationIcon />
-      </template>
-      <template #heading>Règles du Jeu</template>
-    </WelcomeItem>
+    
     
     <div class="rules-content">
-        <h2 style="margin-bottom: .2em;">Comment jouer</h2>
+      <WelcomeItem>
+        <template #icon>
+          <DocumentationIcon />
+        </template>
+        <template #heading>Règles du Jeu</template>
+      </WelcomeItem>
+      
+        <h2>Comment jouer :</h2>
         
         <p>- On cherche un triman :</p>
         <p class="small-text">Le premier joueur à obtenir un 3 ou dont la somme des dés est égale à 3 devient le Triman pour ce tour. (il boit une gorgé pour fêter ca !)</p>
@@ -48,21 +50,23 @@ export default {
             <div>{{ rule.rule }}</div>
             <div>{{ rule.drinks }}</div>
           </div>
-          <p style="font-size: .7em; padding: .5em;">(En cas de double, le joueur donne le nombre de gorgées correspondant au chiffre obtenu)</p>
+          <p>(En cas de double, le joueur donne le nombre de gorgées correspondant au chiffre obtenu)</p>
         </div>
 
-        <p class="small-text">Tant que le résultat entraîne des actions, le joueur relance les dés.</p>
+        <p class="small-text" style="margin-bottom: 1rem;">Tant que le résultat entraîne des actions, le joueur relance les dés.</p>
         <p>- Fin du tour :</p>
-        <p class="small-text">Le tour se termine quand tous les joueurs ont joué, le Triman jouant toujours en dernier.</p>
+        <p class="small-text">Le tour se termine quand tous les joueurs ont joué, le Triman jouant toujours en dernier. </p>
+        <p class="small-text">Une fois le tour terminé on reprend a zéro et on cherche un nouveau triman. </p>
+
         
 
-        <div class="additional-info">
-          <h3>Règles supplémentaires</h3>
+        <!-- <div class="additional-info">
+          <h4>Règles supplémentaires</h4>
           <ul>
-            <li>En cas de double, le joueur donne le nombre de gorgées correspondant au chiffre obtenu.</li>
-            <li>Le jeu continue jusqu'à ce que tous les joueurs aient bu suffisamment ou que vous décidiez d'arrêter.</li>
+             <li>En cas de double, le joueur donne le nombre de gorgées correspondant au chiffre obtenu.</li> 
+            <li class="small-text">Le jeu continue jusqu'à ce que tous les joueurs aient bu suffisamment ou que vous décidiez d'arrêter.</li>
           </ul>
-        </div>
+        </div> -->
       </div>
   </div>
 
@@ -78,16 +82,28 @@ export default {
 }
 
 .rules-content {
-  background-color: #f9f9f9;
+  background-color: var(--color-background);
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  box-shadow: 0 2px 12px rgba(255, 255, 255, 0.1);
   margin-top: 1em;
+  margin-bottom: 5rem;
 }
 
-h2, h3 {
-  color: #2c3e50;
+ h3, h4 {
+  color: var(--vt-c-white-mute);
   margin-top: 0;
+}
+
+h2 {
+  color: var(--vt-c-white-mute);
+  margin-bottom: .2em;
+  margin-top: .5em;
+}
+
+p {
+  color: rgba(235, 235, 235, .95);
 }
 
 .rules-table {
@@ -99,10 +115,18 @@ h2, h3 {
   margin-bottom: 5px;
 }
 
+.rules-table p{
+  font-size: .7em; 
+  padding: .5em; 
+  background: #d3d3d3; 
+  color: var(--color-background);
+}
+
 .small-text {
   font-size: 11px;
   padding: 0.2em 1em;
   margin-bottom: .7em;
+  color: var(--vt-c-text-dark-2);
 }
 
 .table-header, .table-row {
@@ -128,6 +152,10 @@ h2, h3 {
 
 .table-row:nth-child(even) {
   background-color: #f2f2f2;
+}
+
+.table-row:nth-child(odd) {
+  background-color: #d3d3d3;
 }
 
 .additional-info {

@@ -18,10 +18,10 @@
     --vt-c-text-dark-1: var(--vt-c-white);
     --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
     /* color palette & font */
-    --green: #00bd7e;
+    --green: #00bd5edc;
     --black: #333;
-    --yellow: #FFD166;
-    --red: #EF476F;
+    --yellow: #FFD166dc;
+    --red: #ef4747;
     --blue: #8093f1;
     --font: "Luckiest Guy", cursive;
 }
