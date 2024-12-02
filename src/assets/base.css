@@ -24,6 +24,7 @@
     --red: #ef4747;
     --blue: #8093f1;
     --font: "Luckiest Guy", cursive;
+    --white-text: var(--vt-c-white-mute)
 }
 
 

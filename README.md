@@ -3,14 +3,14 @@
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Find your IP
-in a terminal :
+In a terminal :
 
 ```sh
 ipconfig
 ```
 
 ## Project Setup
-
+In the project directory :
 ```sh
 npm install
 ```
