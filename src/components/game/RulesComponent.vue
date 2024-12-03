@@ -1,5 +1,7 @@
 <template>
     <div class="rule-container" v-if="result">
+        <p v-if="players.name">{{ players.name  }}</p>
+
         <p v-if="rules.rule1">{{ rules.rule1 }}</p>
         <p v-if="rules.rule2">{{ rules.rule2 }}</p>
         <p v-if="isChange">{{ rules.change }}</p>
@@ -14,7 +16,8 @@ export default {
     data() {
         return {
             rules: {},
-            isChange: false
+            isChange: false,
+            isTriman: false
         }    
     },
     props: {
@@ -50,12 +53,28 @@ export default {
     methods: {
         handelResult() {
             this.rule = {}
-           
+            
+            this.rules.rule1 = ''
+            this.rules.rule2 = ''
             if (this.result) {
-                console.log(this.result);
-                console.log(this.players);
-
-                if (this.result.de1 === 3 || this.result.de2 === 3 || this.result.total === 3 ) {
+                if (this.isTriman === false) {
+                    
+                    if (this.result.de1 === 3 || this.result.de2 === 3 || this.result.total === 3) {
+                        this.rules.rule1 = 'On a un triman'
+                        
+                        this.$emit('isRule', false)
+                        this.isChange = true
+                        this.isTriman = true
+                        return
+                    } else {
+                        this.isChange = false
+                        this.$emit('isRule', false)
+                    this.rules.rule1 = 'On cherche un triman'
+                    return
+                    }                    
+                }else if(this.isTriman === true) {
+                    this.isChange = false
+                    if (this.result.de1 === 3 || this.result.de2 === 3 || this.result.total === 3 ) {
                     this.rules.rule2 = RulesEnum.TRIMAN_BOIT.rule
                 }
                 if ( this.result.de1 === this.result.de2) {
@@ -88,7 +107,9 @@ export default {
                     }
                 } if(!this.rules.rule2 && !this.rules.rule1) {
                     this.isChange = true
+                    console.log('yooooo');
                     this.$emit('isRule', false)
+                }
                 }
                 
             }
