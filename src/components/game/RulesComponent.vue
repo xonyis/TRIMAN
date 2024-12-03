@@ -2,6 +2,8 @@
     <div class="rule-container" v-if="result">
         <p v-if="rules.rule1">{{ rules.rule1 }}</p>
         <p v-if="rules.rule2">{{ rules.rule2 }}</p>
+        <p v-if="isChange">{{ rules.change }}</p>
+
     </div>
 </template>
 <script>
@@ -12,7 +14,7 @@ export default {
     data() {
         return {
             rules: {},
-            whoTurn:null
+            isChange: false
         }    
     },
     props: {
@@ -20,10 +22,13 @@ export default {
           type: Object,
           required: true, // Le prop result est obligatoire
         },
-        whoTurn: {
-          type: String,
+        players: {
+          type: Object,
           required: true, // Le prop result est obligatoire
         },
+        changeMessage: {
+            type: String,
+        }
   },
   watch: {
     // Watcher sur le prop `result`
@@ -34,12 +39,22 @@ export default {
       immediate: true, // Si vous voulez que le watcher se déclenche dès le montage du composant
       deep: true, // Permet de surveiller les propriétés imbriquées de `result`
     },
+    changeMessage: {
+        handler() {
+            this.rules.change = this.changeMessage;
+      },
+      immediate: true, // Si vous voulez que le watcher se déclenche dès le montage du composant
+      deep: true,
+    }
   },
     methods: {
         handelResult() {
             this.rule = {}
+           
             if (this.result) {
                 console.log(this.result);
+                console.log(this.players);
+
                 if (this.result.de1 === 3 || this.result.de2 === 3 || this.result.total === 3 ) {
                     this.rules.rule2 = RulesEnum.TRIMAN_BOIT.rule
                 }
@@ -72,12 +87,15 @@ export default {
                         this.rules.rule2 = RulesEnum.TRIMAN_BOIT.rule
                     }
                 } if(!this.rules.rule2 && !this.rules.rule1) {
+                    this.isChange = true
                     this.$emit('isRule', false)
-
                 }
                 
             }
             
+        },
+        updateRule() {
+            this.rules.rule1 = this.changeMessage; // Met à jour rule1 avec le message du parent
         }
     }
 }

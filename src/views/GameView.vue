@@ -21,7 +21,7 @@
         </div>
 
         <div class="parent" v-else>
-            <div class="div1">{{game.players[playerTurn].name}}:<RulesComponent v-if="!isCooldown && !game.ignorance" @isRule="changePlayer" :result="result"/>
+            <div class="div1">{{game.players[playerTurn].name}}:<RulesComponent v-if="!isCooldown && !game.ignorance" @isRule="changePlayer" :result="result" :changeMessage="parentMessage" :players="game.players[playerTurn]"/>
             </div>
             
             <div class="div3"><DiceComponent ref="diceComponent1" @value="handleDice1"/></div>
@@ -71,7 +71,8 @@ export default {
             cooldownTime: 1500, // Temps de cooldown en millisecondes
             interval: null,
             playerInput: null,
-            playerTurn: 0
+            playerTurn: 0,
+            whoTurn:0,
         }
     },
     computed: {
@@ -141,7 +142,16 @@ export default {
                 if (this.playerTurn === this.game.players.length) {
                     this.playerTurn = 0
                 }
+                this.updatePlayerRule();
             }
+            
+            return this.playerTurn
+        },
+        updatePlayerRule() {
+        // Émet un événement pour notifier le changement de règle
+          this.parentMessage = `C'est à ${this.game.players[this.playerTurn].name} de jouer`
+          console.log( this.parentMessage);
+          this.$emit('changeMessage', this.parentMessage );
         },
         setNumberOfPlayers() {
           if (this.playerInput >= 1 && this.playerInput <= 8) {
