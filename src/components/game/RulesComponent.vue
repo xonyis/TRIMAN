@@ -64,7 +64,7 @@ export default {
                 if (this.isTriman === false) {
                     
                     if (this.result.de1 === 3 || this.result.de2 === 3 || this.result.total === 3) {
-                        this.rules.rule1 = 'On a un triman'
+                        this.rules.rule1 = this.players.name + ' est triman'
                         
                         this.$emit('isRule', false)
                         this.isChange = true
