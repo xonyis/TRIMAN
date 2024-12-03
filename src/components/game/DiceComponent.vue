@@ -1,7 +1,9 @@
 <template>
     <div>
+        
         <img v-if="dice.isRolling" :src="dice.gifPath" @load="gifLoaded" alt="gif lancé dés" />
         <img v-if="!dice.isRolling && dice.value" :src="dice.imgPath" alt="image finale du lancé" />
+        <img v-if="!dice.isRolling && !dice.value" src="/assets/diceGif/dice-1.gif" alt="image finale du lancé" />
         <div v-if="!dice.isRolling" :style="dynamicStyle">{{ dice.value }}</div>
    </div>
 </template>
@@ -11,7 +13,7 @@ export default {
         return {
             dice : {
                 gifPath:null,
-                imgPath: null,
+                imgPath: '/assets/diceGif/dice-6.gif',
                 value: null,
                 isRolling: false
             }

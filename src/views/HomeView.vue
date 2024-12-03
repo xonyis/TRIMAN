@@ -8,6 +8,5 @@ import HelloWorld from '../components/HelloWorld.vue'
   <main>
     <HelloWorld msg="Triman !" />
     <TheWelcome />
-    <img src="../assets/diceGif/dice-1-roll.gif" alt="">
   </main>
 </template>

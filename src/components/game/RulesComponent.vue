@@ -1,11 +1,15 @@
 <template>
     <div class="rule-container" v-if="result">
-        <p v-if="players.name">{{ players.name  }}</p>
+        <p v-if="players.name">Tour : {{ players.name  }}</p>
 
         <p v-if="rules.rule1">{{ rules.rule1 }}</p>
         <p v-if="rules.rule2">{{ rules.rule2 }}</p>
         <p v-if="isChange">{{ rules.change }}</p>
 
+    </div>
+    <div class="rule-container" v-if="!result">
+        <p>Player 1</p>
+        <p>A toi de jouer !</p>
     </div>
 </template>
 <script>
