@@ -3,21 +3,24 @@
         <!-- Formulaire pour choisir le nombre de joueurs -->
         <div v-if="!game.nbrPlayer" class="form-container">
             <HelloWorld msg="Triman !" />
-          <h2>Choisissez le nombre de joueurs</h2>
-          <form @submit.prevent="setNumberOfPlayers">
-            <label for="nbrPlayer">Nombre de joueurs (1-8) :</label>
-            <input
-              type="number"
-              id="nbrPlayer"
-              v-model.number="playerInput"
-              min="2"
-              max="8"
-              required
-            /> <br>
-            <label for="nbrPlayer">Règles ignorance:</label>
-            <input type="checkbox" v-model="game.ignorance" id="checkboxIgnorance">
-            <button type="submit">Commencer</button>
-          </form>
+            <div class="form-wrapper">
+              <h2>Choisissez le nombre de joueurs</h2> <br>
+              <form @submit.prevent="setNumberOfPlayers">
+                <label for="nbrPlayer">Nombre de joueurs (1-8) : </label>
+                <input
+                  type="number"
+                  id="nbrPlayer"
+                  v-model.number="playerInput"
+                  min="2"
+                  max="8"
+                  required
+                /> <br> <br>
+                <input type="checkbox" v-model="game.ignorance" id="checkboxIgnorance">
+
+                <label for="checkboxIgnorance"> Règle ignorance</label>
+                <button class="btn-submit" type="submit">Commencer</button>
+              </form>
+            </div>
         </div>
 
         <div class="parent" v-else>
@@ -262,27 +265,39 @@ body {
   gap: 10px;
 }
 
-button {
+.btn-submit {
   position: relative;
   padding: 10px 20px;
   font-size: 18px;
   color: #fff;
-  background-color: #007bff; /* Couleur de base */
+  background-color: var(--green); /* Couleur de base */
   border: none;
   border-radius: 5px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: auto;
   transition: background-color 0.3s;
   overflow: hidden;
+  margin-top: 2rem;
 }
 
 button:disabled {
   cursor: not-allowed;
 }
 
+.form-wrapper {
+  background: var(--white-text);
+  color: var(--black);
+   padding: 1rem .5em; 
+   text-align: center;
+  border-radius: 10px;
+}
 
+.form-wrapper label, input {
+  font-size: 1.2Em;
+}
 /* .parent2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
