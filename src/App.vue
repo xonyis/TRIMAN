@@ -1,5 +1,20 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
+<script >
+import { RouterLink, RouterView, useRoute  } from 'vue-router'
+import { ref } from 'vue';
+
+export default {
+  setup() {
+    const showNavbar = ref(true);
+    const handleChildEvent = (shouldShowNavbar) => {
+      showNavbar.value = shouldShowNavbar;
+    };
+
+    return {
+      showNavbar,
+      handleChildEvent,
+    };
+  },
+};
 </script>
 
 <template>
@@ -7,7 +22,7 @@ import { RouterLink, RouterView } from 'vue-router'
     <header>
       <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
 
-      <div class="wrapper">
+      <div class="wrapper" v-if="showNavbar">
         <nav>
           <!-- <RouterLink to="/">Home</RouterLink> -->
           <RouterLink to="/">Game</RouterLink>
@@ -15,7 +30,7 @@ import { RouterLink, RouterView } from 'vue-router'
         </nav>
       </div>
     </header>
-  <RouterView />
+  <RouterView @updateNavbarVisibility="handleChildEvent"  />
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
     <div class="rule-container" v-if="result">
-        <p v-if="players.name">Tour : {{ players.name  }}</p>
+        <p v-if="displayTurn == true">{{ players.name  }}</p>
 
         <p v-if="rules.rule1">{{ rules.rule1 }}</p>
         <p v-if="rules.rule2">{{ rules.rule2 }}</p>
@@ -21,7 +21,8 @@ export default {
         return {
             rules: {},
             isChange: false,
-            isTriman: false
+            displayTurn: true,
+            newtrimman: false
         }    
     },
     props: {
@@ -35,6 +36,10 @@ export default {
         },
         changeMessage: {
             type: String,
+        },
+        isTriman: {
+            type: Boolean,
+            required: true
         }
   },
   watch: {
@@ -56,11 +61,15 @@ export default {
   },
     methods: {
         handelResult() {
-            this.rule = {}
+            this.displayTurn = true
+            console.log(this.isTriman);
             
-            this.rules.rule1 = ''
-            this.rules.rule2 = ''
+            this.rule = {rule1 : '', rule2 : ''}
+            
             if (this.result) {
+
+
+
                 if (this.isTriman === false) {
                     
                     if (this.result.de1 === 3 || this.result.de2 === 3 || this.result.total === 3) {
@@ -68,15 +77,20 @@ export default {
                         
                         this.$emit('isRule', false)
                         this.isChange = true
-                        this.isTriman = true
-                        return
+                        this.displayTurn = false
+                        this.newtrimman = true
+                        this.$emit('triman', this.players, this.newtrimman )
+                       
                     } else {
                         this.isChange = false
                         this.$emit('isRule', false)
                     this.rules.rule1 = 'On cherche un triman'
-                    return
+                    
                     }                    
-                }else if(this.isTriman === true) {
+                }
+                
+                
+                if(this.isTriman === true) {
                     this.isChange = false
                     if (this.result.de1 === 3 || this.result.de2 === 3 || this.result.total === 3 ) {
                     this.rules.rule2 = RulesEnum.TRIMAN_BOIT.rule
@@ -111,7 +125,7 @@ export default {
                     }
                 } if(!this.rules.rule2 && !this.rules.rule1) {
                     this.isChange = true
-                    console.log('yooooo');
+                    this.displayTurn = false
                     this.$emit('isRule', false)
                 }
                 }
@@ -120,6 +134,7 @@ export default {
             
         },
         updateRule() {
+            
             this.rules.rule1 = this.changeMessage; // Met à jour rule1 avec le message du parent
         }
     }
@@ -127,11 +142,16 @@ export default {
 </script>
 <style scoped>
 div {
+    height: 100%;
     text-align: center;
     font-size: 1.2em;
     position: relative;
     top: -5px;
     color: var(--white-text);   
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 </style>

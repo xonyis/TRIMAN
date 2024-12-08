@@ -25,16 +25,24 @@
 
         <div class="parent" v-else>
             <div class="div1" :style="dynamicPlayerColor">
-              <RulesComponent v-if="!isCooldown && !game.ignorance " @isRule="changePlayer" 
+              <RulesComponent v-if="!isCooldown && !game.ignorance " 
+              @triman="setTriman"
+              @isRule="changePlayer" 
+              :isTriman="isTriman" 
               :result="result" 
               :changeMessage="parentMessage" 
               :players="game.players[playerTurn]"/>
+              
             </div>
             
             <div class="div3"><DiceComponent ref="diceComponent1" @value="handleDice1"/></div>
             <div class="div4"><DiceComponent ref="diceComponent2" @value="handleDice2"/></div>
             <div class="div5">
+              <div v-if="triman" style="position: absolute; right: 30px; color: var(--red),">{{triman.name}}</div>
+
                 <span>Total :</span>
+                <div>
+                </div>
                 <p v-if="!isCooldown && totalDice" :style="dynamicStyleDice">{{ totalDice }}</p>
                 
             </div>
@@ -66,6 +74,7 @@ import PlayerColorsEnum from '@/enums/PlayerColorsEnum';
 export default {
     data() {
         return {
+            triman: {},
             game: {
                 nbrPlayer: null,
                 players: [],
@@ -77,6 +86,7 @@ export default {
             dice2: {
                 value:null
             },
+            isTriman: false,
             isCooldown: false, // État de cooldown
             progress: 0, // Progression de la barre
             cooldownTime: 1500, // Temps de cooldown en millisecondes
@@ -121,6 +131,7 @@ export default {
         },
         callRollDice() {
           // Accéder à la méthode rollDice dans l'enfant
+          console.log('Données reçues de l\'enfant :', this.isTriman);
           if (this.isCooldown != true) {
             this.startCooldown()
             this.$refs.diceComponent1.lancerDe();
@@ -164,6 +175,10 @@ export default {
             
             return this.playerTurn
         },
+        setTriman(players, newtrimman){
+          this.isTriman = newtrimman
+          this.triman = players
+        },
         updatePlayerRule() {
         // Émet un événement pour notifier le changement de règle
           this.parentMessage = `C'est à ${this.game.players[this.playerTurn].name} de jouer`
@@ -173,7 +188,10 @@ export default {
         setNumberOfPlayers() {
           if (this.playerInput >= 1 && this.playerInput <= 8) {
             this.game.nbrPlayer = this.playerInput; // Met à jour le nombre de joueurs
-            
+
+            if(this.game.nbrPlayer){
+              this.$emit('updateNavbarVisibility', false)
+            }
             // Récupérer les couleurs disponibles sous forme de tableau
             const colors = Object.values(PlayerColorsEnum).map(color => color.value);
             const shuffledColors = colors.sort(() => Math.random() - 0.5);
