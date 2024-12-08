@@ -24,7 +24,11 @@
         </div>
 
         <div class="parent" v-else>
-            <div class="div1" ><RulesComponent v-if="!isCooldown && !game.ignorance " @isRule="changePlayer" :result="result" :changeMessage="parentMessage" :players="game.players[playerTurn]"/>
+            <div class="div1" :style="dynamicPlayerColor">
+              <RulesComponent v-if="!isCooldown && !game.ignorance " @isRule="changePlayer" 
+              :result="result" 
+              :changeMessage="parentMessage" 
+              :players="game.players[playerTurn]"/>
             </div>
             
             <div class="div3"><DiceComponent ref="diceComponent1" @value="handleDice1"/></div>
@@ -53,7 +57,11 @@
 import DiceComponent from '@/components/game/DiceComponent.vue';
 import RulesComponent from '@/components/game/RulesComponent.vue';
 import HelloWorld from '../components/HelloWorld.vue'
-//  AJOUT DE ON CHERCHE UN TRIMAN| ET METTRE LES COULEUR | LANCEMENT v1
+import PlayerColorsEnum from '@/enums/PlayerColorsEnum';
+
+
+//  AJOUT DE ON CHERCHE UN TRIMAN
+//  LANCEMENT v1
 // aJOUT STAT PLUS NBR DE MANCHE DANS LES PARAMS AVANCER AU LANCEMENT DE LA PARTIE | CHOIX NOM | SAVE POUR LES | LANCEMENT v1
 export default {
     data() {
@@ -84,12 +92,18 @@ export default {
       return `linear-gradient(to right, rgba(0, 198, 94, 0.6) ${this.progress}%, rgba(0, 189, 94, 1) ${this.progress}%)`;
     },
     totalDice() {
-        return this.dice1.value + this.dice2.value 
+        return this.dice1.value + this.dice2.value
     },
     dynamicStyleDice() {
         return {
           color: this.totalDice === 3 ? 'var(--red)' : "var(--white-text)",
           lineHeight : '1em'
+        }
+    },
+    dynamicPlayerColor() {
+      return {
+          background: this.game.players[this.playerTurn].color,
+          
         }
     }
   },
@@ -160,17 +174,20 @@ export default {
           if (this.playerInput >= 1 && this.playerInput <= 8) {
             this.game.nbrPlayer = this.playerInput; // Met à jour le nombre de joueurs
             
+            // Récupérer les couleurs disponibles sous forme de tableau
+            const colors = Object.values(PlayerColorsEnum).map(color => color.value);
+            const shuffledColors = colors.sort(() => Math.random() - 0.5);
+
             // Créer le tableau des joueurs
             this.game.players = Array.from({ length: this.playerInput }, (v, i) => ({
                 id: i + 1,
                 name: `Player ${i + 1}`,
+                color: colors[i],
               }));
               
             } else {
               alert("Le nombre de joueurs doit être entre 1 et 8.");
             }
-            console.log(this.game.ignorance);
-            
         },
     }
     
@@ -201,7 +218,7 @@ main {
 
 .div1 { 
     grid-area: 1 / 1 / 2 / 3;
-    background: var(--blue);
+    
     color: var(--white-text);   
 
 }
