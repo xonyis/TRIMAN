@@ -24,7 +24,7 @@
         </div>
 
         <div class="parent" v-else>
-            <div class="div1"><RulesComponent v-show="!isCooldown && !game.ignorance" @isRule="changePlayer" :result="result" :changeMessage="parentMessage" :players="game.players[playerTurn]"/>
+            <div class="div1" ><RulesComponent v-if="!isCooldown && !game.ignorance " @isRule="changePlayer" :result="result" :changeMessage="parentMessage" :players="game.players[playerTurn]"/>
             </div>
             
             <div class="div3"><DiceComponent ref="diceComponent1" @value="handleDice1"/></div>

@@ -32,3 +32,9 @@ pnpm build
 ```sh
 pnpm lint
 ```
+### TODO
+methodes afficher player et triman
+afficher rules a la fin 
+balise video pour les gifs
+Ajouter des manches
+refaire home page
