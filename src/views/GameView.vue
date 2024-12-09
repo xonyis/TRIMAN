@@ -38,9 +38,12 @@
             <div class="div3"><DiceComponent ref="diceComponent1" @value="handleDice1"/></div>
             <div class="div4"><DiceComponent ref="diceComponent2" @value="handleDice2"/></div>
             <div class="div5">
-              <div v-if="triman" style="position: absolute; right: 30px; color: var(--red),">{{triman.name}}</div>
-
+              <div v-if="triman" class="total-container">
                 <span>Total :</span>
+                <span class="triman-name" style="color: #ff6961">{{triman.name}}</span>
+              </div>
+
+                
                 <div>
                 </div>
                 <p v-if="!isCooldown && totalDice" :style="dynamicStyleDice">{{ totalDice }}</p>
@@ -68,8 +71,6 @@ import HelloWorld from '../components/HelloWorld.vue'
 import PlayerColorsEnum from '@/enums/PlayerColorsEnum';
 
 
-//  AJOUT DE ON CHERCHE UN TRIMAN
-//  LANCEMENT v1
 // aJOUT STAT PLUS NBR DE MANCHE DANS LES PARAMS AVANCER AU LANCEMENT DE LA PARTIE | CHOIX NOM | SAVE POUR LES | LANCEMENT v1
 export default {
     data() {
@@ -131,7 +132,6 @@ export default {
         },
         callRollDice() {
           // Accéder à la méthode rollDice dans l'enfant
-          console.log('Données reçues de l\'enfant :', this.isTriman);
           if (this.isCooldown != true) {
             this.startCooldown()
             this.$refs.diceComponent1.lancerDe();
@@ -165,6 +165,13 @@ export default {
             
         },
         changePlayer() {
+            // Permet de reset le triman a la fin du tour
+            if (this.game.players[this.playerTurn].id === this.triman.id){
+              console.log("end triman");
+              this.triman = {}
+              this.isTriman = false
+            }
+
             if (this.playerTurn < this.game.players.length) {
                 this.playerTurn++
                 if (this.playerTurn === this.game.players.length) {
@@ -182,7 +189,6 @@ export default {
         updatePlayerRule() {
         // Émet un événement pour notifier le changement de règle
           this.parentMessage = `C'est à ${this.game.players[this.playerTurn].name} de jouer`
-          console.log( this.parentMessage);
           this.$emit('changeMessage', this.parentMessage );
         },
         setNumberOfPlayers() {
@@ -240,6 +246,13 @@ main {
     color: var(--white-text);   
 
 }
+.total-container {
+  display: flex;
+  justify-content: space-between;
+  
+}
+
+
 .div2 { 
     grid-area: 1 / 2 / 2 / 3;
     background: var(--yellow);

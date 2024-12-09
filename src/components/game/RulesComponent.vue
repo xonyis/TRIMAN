@@ -62,16 +62,15 @@ export default {
     methods: {
         handelResult() {
             this.displayTurn = true
-            console.log(this.isTriman);
             
             this.rule = {rule1 : '', rule2 : ''}
             
+
             if (this.result) {
 
 
 
                 if (this.isTriman === false) {
-                    
                     if (this.result.de1 === 3 || this.result.de2 === 3 || this.result.total === 3) {
                         this.rules.rule1 = this.players.name + ' est triman'
                         
@@ -84,7 +83,7 @@ export default {
                     } else {
                         this.isChange = false
                         this.$emit('isRule', false)
-                    this.rules.rule1 = 'On cherche un triman'
+                        this.rules.rule1 = 'On cherche un triman'
                     
                     }                    
                 }
