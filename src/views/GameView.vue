@@ -341,42 +341,35 @@ button:disabled {
    padding: 1rem .5em; 
    text-align: center;
   border-radius: 10px;
+  margin: auto;
 }
 
 .form-wrapper label, input {
   font-size: 1.2Em;
 }
-/* .parent2 {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 100px repeat(2, 120px)  repeat(2, 100px);
-    grid-column-gap: 20px;
+
+@media (min-width: 1024px) {
+  .parent {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  grid-column-gap: 20px;
     grid-row-gap: 20px;
-    height: 650px;
+    max-width: 80vw;
+    margin: auto;
+    padding: 2rem;
+  
 }
 
-.parent2  div {
-    border: 1px solid;
-    box-shadow: 0px 0px 10px 0px rgba(255,255,255,0.12);
-    border-radius: 15px;
-    padding: 1rem;
-    border: .75px solid rgba(255, 255, 255, 0.178);
-}
+.div1 { grid-area: 1 / 1 / 2 / 2; }
+.div5 { grid-area: 1 / 2 / 2 / 3; }
+.div3 { grid-area: 2 / 1 / 4 / 2; }
+.div4 { grid-area: 2 / 2 / 4 / 3; }
+.div6 { grid-area: 4 / 1 / 5 / 3; }
 
-.div12 {
-    grid-area: 1 / 1 / 2 / 3; 
-    background: var(--blue);
+.form-wrapper {
+  max-width: 50vw;
 }
-.div22 {
-    grid-area: 2 / 1 / 4 / 2; }
-.div32 {
-    grid-area: 2 / 2 / 4 / 3; }
-.div42 {
-    grid-area: 4 / 1 / 5 / 3;
-    background: var(--red);
+  
 }
-.div52 {
-    grid-area: 5 / 1 / 6 / 3; 
-    background: var(--green);
-} */
 </style>
