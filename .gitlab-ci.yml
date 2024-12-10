@@ -1,0 +1,10 @@
+stages:
+  - deploy
+
+deploy_to_prod:
+  stage: deploy
+  only:
+    - prod
+  script:
+    - echo "Déploiement en cours sur le serveur..."
+    - ssh user@your-server-ip "cd /path/to/your/app && git pull origin prod && ./deploy.sh"
