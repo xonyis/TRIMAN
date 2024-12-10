@@ -1,0 +1,38 @@
+name: Deploy Vue.js to Hostinger
+
+on:
+  push:
+    branches:
+      - prod # Déclenche ce workflow uniquement sur la branche "prod"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout le code du dépôt
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 2. Installer Node.js et les dépendances
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16 # Remplace par la version nécessaire pour ton projet
+    - run: npm install
+
+    # 3. Construire le projet
+    - name: Build project
+      run: npm run build
+
+    # 4. Déployer sur le serveur
+    - name: Deploy to Hostinger
+      env:
+        HOST: ${{ secrets.HOSTINGER_HOST }} # Ajoute ceci dans les secrets GitHub
+        USER: ${{ secrets.HOSTINGER_USER }} # Ajoute ceci dans les secrets GitHub
+        KEY: ${{ secrets.HOSTINGER_SSH_KEY }} # Ajoute la clé privée dans les secrets GitHub
+      run: |
+        mkdir -p ~/.ssh
+        echo "$KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        scp -r dist/* $USER@$HOST:/domains/julianmayer.fr/public_html
